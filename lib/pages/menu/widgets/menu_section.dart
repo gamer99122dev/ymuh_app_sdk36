@@ -4,7 +4,7 @@ import 'package:ymuh_app/pages/menu/widgets/menu_item.dart';
 import 'package:ymuh_app/theme/app_color.dart';
 
 class MenuSection extends StatelessWidget {
-  const MenuSection({Key key, @required this.menuModel}) : super(key: key);
+  const MenuSection({Key? key, required this.menuModel}) : super(key: key);
 
   final MenuModel menuModel;
 
@@ -15,7 +15,7 @@ class MenuSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(12.0),
           child: Text(
-            menuModel.title,
+            menuModel.title!,
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.PRIMARY_COLOR),
           ),
         ),

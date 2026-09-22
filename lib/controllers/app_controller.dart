@@ -45,7 +45,7 @@ class AppController extends GetxController {
 
   // Show loading overlay
   static Future<void> showLoading() async {
-    return await showLoadingDialog(tapDismiss: false);
+    await showLoadingDialog(tapDismiss: false);
   }
 
   // Hide loading overlay

@@ -5,19 +5,19 @@ import 'package:ymuh_app/widgets/webview_page.dart';
 
 class GridItem {
   // 圖片
-  String icon;
+  String? icon;
 
   // 標題文字
-  String title;
+  String? title;
 
   // 連結路徑: WEBVIEW放路徑，連結需包含DOMAIN(因有可能是其他網域的網站)
-  String link;
+  String? link;
 
   // 開啟型態: WEBVIEW、BROWSER、EMAIL
-  String type;
+  String? type;
 
   // WebView的連結網址(Full Path): FOR WEBVIEW使用
-  String get fullUrl => AppController.BASE_URL + '/' + this.link;
+  String get fullUrl => AppController.BASE_URL + '/' + this.link!;
 
   // 開啟網址
   void launchURL() async {
@@ -26,17 +26,18 @@ class GridItem {
         await Get.to(WebViewPage(url: this.fullUrl, title: this.title));
         break;
       case 'BROWSER':
-        await canLaunch(this.link) ? launch(this.link) : throw 'Cannot launch url: ${this.link}';
+        Uri uri = Uri.parse(this.link!);
+        await canLaunchUrl(uri) ? launchUrl(uri, mode: LaunchMode.externalApplication) : throw 'Cannot launch url: ${this.link}';
         break;
       case 'EMAIL':
-        String mailScheme = 'mailto:${this.link}';
-        await canLaunch(mailScheme) ? launch(mailScheme) : throw 'Cannot send mail to: ${this.link}';
+        Uri mailScheme = Uri.parse('mailto:${this.link}');
+        await canLaunchUrl(mailScheme) ? launchUrl(mailScheme) : throw 'Cannot send mail to: ${this.link}';
         break;
       default:
     }
   }
 
-  GridItem.fromJson(Map<String, dynamic> json, String icon, {String type}) {
+  GridItem.fromJson(Map<String, dynamic> json, String? icon, {String? type}) {
     this.link = json['url'];
     this.title = json['title'];
     this.icon = icon;

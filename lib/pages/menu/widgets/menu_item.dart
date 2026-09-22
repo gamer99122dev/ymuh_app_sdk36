@@ -6,7 +6,7 @@ import 'package:ymuh_app/theme/app_color.dart';
 import 'package:ymuh_app/widgets/webview_page.dart';
 
 class MenuItem extends StatefulWidget {
-  MenuItem({Key key, @required this.levelOneMenu}) : super(key: key);
+  MenuItem({Key? key, required this.levelOneMenu}) : super(key: key);
 
   final LevelOneMenu levelOneMenu;
 
@@ -15,7 +15,7 @@ class MenuItem extends StatefulWidget {
 }
 
 class _MenuItemState extends State<MenuItem> with SingleTickerProviderStateMixin {
-  AnimationController rotationController;
+  late AnimationController rotationController;
   @override
   void initState() {
     rotationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
@@ -43,12 +43,12 @@ class _MenuItemState extends State<MenuItem> with SingleTickerProviderStateMixin
           rotationController.reverse();
         }
       },
-      leading: widget.levelOneMenu.icon != null && widget.levelOneMenu.icon.isNotEmpty ? Image.network('${AppController.BASE_URL}/${widget.levelOneMenu.icon}') : null,
-      title: Text(widget.levelOneMenu.title),
+      leading: widget.levelOneMenu.icon != null && widget.levelOneMenu.icon!.isNotEmpty ? Image.network('${AppController.BASE_URL}/${widget.levelOneMenu.icon}') : null,
+      title: Text(widget.levelOneMenu.title!),
       children: List.generate(
-        widget.levelOneMenu.levelTwoMenus.length,
+        widget.levelOneMenu.levelTwoMenus!.length,
         (index) {
-          var menuItem = widget.levelOneMenu.levelTwoMenus[index];
+          var menuItem = widget.levelOneMenu.levelTwoMenus![index];
           return ListTile(
             leading: menuItem.icon != null && menuItem.icon.isNotEmpty ? Image.network('${AppController.BASE_URL}/${menuItem.icon}') : null,
             title: Text(menuItem.title),

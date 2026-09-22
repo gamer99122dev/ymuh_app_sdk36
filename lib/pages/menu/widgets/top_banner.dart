@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ymuh_app/theme/app_color.dart';
 
 class TopBanner extends StatelessWidget {
-  const TopBanner({Key key}) : super(key: key);
+  const TopBanner({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

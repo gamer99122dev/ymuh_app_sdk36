@@ -56,13 +56,13 @@ class HomePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              gridItem.icon,
-                              color: AppColors.PRIMARY_COLOR,
+                              gridItem.icon!,
+                              colorFilter: ColorFilter.mode(AppColors.PRIMARY_COLOR, BlendMode.srcIn),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Text(gridItem.title),
+                            Text(gridItem.title!),
                           ],
                         ),
                       ),
@@ -74,47 +74,50 @@ class HomePage extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TelephoneBar(),
-          GetBuilder<HomePageController>(
-            builder: (_) {
-              return Container(
-                width: double.infinity,
-                height: 120,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/banner.png'),
-                    fit: BoxFit.fill,
-                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.srcOver),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TelephoneBar(),
+            GetBuilder<HomePageController>(
+              builder: (_) {
+                return Container(
+                  width: double.infinity,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/banner.png'),
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.black.withValues(alpha: 0.6), BlendMode.srcOver),
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: List.generate(
-                    controller.bottomNavItems.length,
-                    (index) {
-                      GridItem bottomNavItem = controller.bottomNavItems[index];
-                      return VerticalButton(
-                        onPressed: () => bottomNavItem.launchURL(),
-                        icon: SvgPicture.asset(bottomNavItem.icon),
-                        label: Padding(
-                          padding: EdgeInsets.only(top: bottomNavItem.type == "EMAIL" ? 8.0 : 0),
-                          child: Text(
-                            bottomNavItem.title,
-                            style: TextStyle(color: Colors.white),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: List.generate(
+                      controller.bottomNavItems.length,
+                      (index) {
+                        GridItem bottomNavItem = controller.bottomNavItems[index];
+                        return VerticalButton(
+                          onPressed: () => bottomNavItem.launchURL(),
+                          icon: SvgPicture.asset(bottomNavItem.icon!),
+                          label: Padding(
+                            padding: EdgeInsets.only(top: bottomNavItem.type == "EMAIL" ? 8.0 : 0),
+                            child: Text(
+                              bottomNavItem.title!,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -16,7 +16,7 @@ class MenuPageController extends GetxController {
     new GridItem(icon: 'assets/images/ic_other.svg', title: '其它', link: '/regis/indexHospital.php'),
   ];
   // 選單頁下方的按鈕: 真正要顯示的資料
-  List<GridItem> _bottomNavItems;
+  List<GridItem>? _bottomNavItems;
 
   // 選單
   List<MenuModel> _menus = [];
@@ -82,7 +82,7 @@ class MenuPageController extends GetxController {
   }
 
   // 從json file取得預設的選單
-  Future<Map<String, dynamic>> _getDefaultMenu() async {
+  Future<Map<String, dynamic>?> _getDefaultMenu() async {
     String strMenuJson = await rootBundle.loadString('assets/menu.json');
     return jsonDecode(strMenuJson);
   }

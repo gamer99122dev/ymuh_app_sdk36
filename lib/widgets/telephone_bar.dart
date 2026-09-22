@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ymuh_app/theme/app_color.dart';
 
 class TelephoneBar extends StatelessWidget {
-  const TelephoneBar({Key key}) : super(key: key);
+  const TelephoneBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

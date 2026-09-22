@@ -7,7 +7,7 @@ class AlignedGrid extends StatelessWidget {
   final columns = 3;
   final List<Widget> Function(double width) buildItems;
   
-  const AlignedGrid({Key key, @required this.buildItems}) : super(key: key);
+  const AlignedGrid({Key? key, required this.buildItems}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
