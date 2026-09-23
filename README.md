@@ -27,11 +27,13 @@ Using VS Code or Android Studio to Open this project, F5 or Ctrl + F5 to run the
 
 ## Release
 
-Build appbundle or apk (for Android)
+Build appbundle or apk (for Android), with Dart code obfuscated
 ```
-flutter build appbundle
-flutter build apk
+flutter build appbundle --obfuscate --split-debug-info=symbols/<version>
+flutter build apk --obfuscate --split-debug-info=symbols/<version>
 ```
+
+Keep the `symbols/<version>` folder of every release (it is git-ignored). It is needed to decode that release's obfuscated stack traces with `flutter symbolize`.
 
 Build iOS (for iOS, using XCode upload)
 ```
