@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:ymuh_app/controllers/app_controller.dart';
 import 'package:ymuh_app/theme/app_color.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -23,6 +25,16 @@ class _WebViewPageState extends State<WebViewPage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
+        // 只有醫院網站在 App 內開，其他網址（外部網站、tel:、mailto:）交給手機的瀏覽器或對應 App，
+        // 避免外部網頁在 App 裡看起來像醫院的頁面。iframe 不攔，內嵌影片、地圖照常載入。
+        onNavigationRequest: (request) {
+          final uri = Uri.parse(request.url);
+          if (!request.isMainFrame || (uri.scheme == 'https' && uri.host == Uri.parse(AppController.BASE_URL).host)) {
+            return NavigationDecision.navigate;
+          }
+          launchUrl(uri, mode: LaunchMode.externalApplication);
+          return NavigationDecision.prevent;
+        },
         onWebResourceError: (e) {
           // print(e);
           setState(() {
