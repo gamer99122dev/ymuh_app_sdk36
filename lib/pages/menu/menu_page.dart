@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:load/load.dart';
+import 'package:ymuh_app/controllers/app_controller.dart';
 import 'package:ymuh_app/controllers/menu_page_controller.dart';
 import 'package:ymuh_app/pages/menu/widgets/menu_item.dart';
 import 'package:ymuh_app/pages/menu/widgets/menu_section.dart';
 import 'package:ymuh_app/pages/menu/widgets/top_banner.dart';
 import 'package:ymuh_app/theme/app_color.dart';
 import 'package:ymuh_app/widgets/telephone_bar.dart';
+import 'package:ymuh_app/widgets/webview_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -27,9 +29,20 @@ class MenuPage extends StatelessWidget {
             init: MenuPageController(),
             builder: (c) {
               return ListView.builder(
-                itemCount: c.menus.length,
+                // 最後一列固定放隱私權政策（Google Play 規定 App 內要有連結）
+                itemCount: c.menus.length + 1,
                 itemBuilder: (context, index) {
                   // if(index == 0) return TopBanner();
+                  if (index == c.menus.length) {
+                    return ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 35),
+                      leading: Icon(Icons.privacy_tip_outlined),
+                      title: Text('隱私權政策'),
+                      onTap: () => Get.to(WebViewPage(
+                          url: '${AppController.BASE_URL}/index/privacy-policy.html',
+                          title: '隱私權政策')),
+                    );
+                  }
                   return MenuSection(menuModel: c.menus[index]);
                 },
               );
