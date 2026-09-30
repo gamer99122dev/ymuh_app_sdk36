@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,10 +19,16 @@ class WebViewPage extends StatefulWidget {
 class _WebViewPageState extends State<WebViewPage> {
   bool hasError = false;
   late final WebViewController controller;
+  Timer? _loadTimeout;
 
   @override
   void initState() {
     super.initState();
+    // 首次載入超過 15 秒（例如海外連不上醫院網站）就顯示錯誤畫面，不要讓使用者一直等空白頁
+    // ponytail: 只管第一頁；頁面內再跳轉不計時，網路很慢的使用者可能被誤判，需要時再調大秒數
+    _loadTimeout = Timer(Duration(seconds: 15), () {
+      if (mounted) setState(() => hasError = true);
+    });
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
@@ -35,14 +42,22 @@ class _WebViewPageState extends State<WebViewPage> {
           launchUrl(uri, mode: LaunchMode.externalApplication);
           return NavigationDecision.prevent;
         },
+        onPageFinished: (_) => _loadTimeout?.cancel(),
         onWebResourceError: (e) {
           // print(e);
+          _loadTimeout?.cancel();
           setState(() {
             hasError = true;
           });
         },
       ))
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  @override
+  void dispose() {
+    _loadTimeout?.cancel();
+    super.dispose();
   }
 
   @override

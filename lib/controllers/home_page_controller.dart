@@ -97,7 +97,8 @@ class HomePageController extends GetxController {
   void _getHomeData() async {
     try {
       AppController.showLoading();
-      var response = await Dio().get(
+      // 連不上伺服器（例如海外被擋）時幾秒內就改用預設值，不要讓載入畫面一直轉
+      var response = await Dio(BaseOptions(connectTimeout: Duration(seconds: 5), receiveTimeout: Duration(seconds: 8))).get(
           'https://www.hosp.nycu.edu.tw/tw/index.php?option=com_ajax&plugin=mobile&task=get.main_menu&format=json');
       if (response.data['success']) {
         var data = response.data['data'][0];

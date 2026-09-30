@@ -36,8 +36,8 @@ class MenuPageController extends GetxController {
   void _getMenu() async {
     try {
       AppController.showLoading();
-      var response =
-          await Dio().get('https://www.hosp.nycu.edu.tw/tw/?option=com_ajax&plugin=mobile&task=get.menu&format=json');
+      var response = await Dio(BaseOptions(connectTimeout: Duration(seconds: 5), receiveTimeout: Duration(seconds: 8)))
+          .get('https://www.hosp.nycu.edu.tw/tw/?option=com_ajax&plugin=mobile&task=get.menu&format=json');
       if (response.data['success']) {
         var data = response.data['data'][0];
         // 將Json轉成Class
