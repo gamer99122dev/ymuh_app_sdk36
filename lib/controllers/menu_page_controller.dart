@@ -10,10 +10,10 @@ class MenuPageController extends GetxController {
   // 選單頁下方的按鈕: 預設值
   List<GridItem> _defaultBottomNavItems = [
     new GridItem(icon: 'assets/images/ic_home.svg', title: '首頁'),
-    new GridItem(icon: 'assets/images/ic_search.svg', title: '查詢', link: '/regis/indexmdsList.php'),
-    new GridItem(icon: 'assets/images/ic_hospital.svg', title: '掛號', link: '/regis/indexHospital.php'),
-    new GridItem(icon: 'assets/images/ic_pay.svg', title: '繳費', link: '/regis/indexHospital.php'),
-    new GridItem(icon: 'assets/images/ic_other.svg', title: '其它', link: '/regis/indexHospital.php'),
+    new GridItem(icon: 'assets/images/ic_search.svg', title: '查詢', link: 'regist/mapp.php?component=regist&view=search&tmpl=mobile'),
+    new GridItem(icon: 'assets/images/ic_hospital.svg', title: '公告', link: 'index/message.html'),
+    new GridItem(icon: 'assets/images/ic_pay.svg', title: '門診時刻表', link: 'information/outpatient-schedule.html'),
+    new GridItem(icon: 'assets/images/ic_other.svg', title: '網站', link: ''),
   ];
   // 選單頁下方的按鈕: 真正要顯示的資料
   List<GridItem>? _bottomNavItems;

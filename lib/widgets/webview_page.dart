@@ -89,13 +89,12 @@ class _WebViewPageState extends State<WebViewPage> {
             ? WebViewWidget(controller: controller)
             : Container(
                 child: Center(
-                  // 多了「重新載入」按鈕，小螢幕或橫向時要能捲動，才看得到按鈕
-                  child: SingleChildScrollView(
-                      child: Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/error.jpg'),
+                      // 圖片可縮小：平板橫向時圖片太大會把文字和按鈕擠出畫面
+                      Flexible(child: Image.asset('assets/images/error.jpg', fit: BoxFit.contain)),
                       SizedBox(height: 25),
                       Text('伺服器忙碌中，請稍後再試!'),
                       SizedBox(height: 25),
@@ -109,7 +108,7 @@ class _WebViewPageState extends State<WebViewPage> {
                           child: Text('返回'),
                           style: ElevatedButton.styleFrom(backgroundColor: AppColors.PRIMARY_COLOR))
                     ],
-                  )),
+                  ),
                 ),
               ),
       ),

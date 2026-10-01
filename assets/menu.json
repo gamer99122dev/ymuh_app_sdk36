@@ -1,43 +1,36 @@
 {
   "menu1": {
     "title": "蘭陽院區",
-    "childs": [{
+    "childs": [
+      {
         "title": "網路掛號",
-        "icon": "images/webapi/icons/regist/md0.png",
-        "childs": [{
+        "icon": "images/webapi/icons/regist/Registration.png",
+        "childs": [
+          {
             "title": "依科別",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=section&type=sec&region=A&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Inquire.png"
           },
           {
             "title": "依醫師",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=section&region=A&type=doc&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Health_Center.png"
           },
           {
             "title": "掛號查詢或取消",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=search&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Visit_progress.png"
           }
         ]
       },
       {
         "title": "進度查詢",
-        "icon": "images/webapi/icons/regist/md0.png",
-        "childs": [{
-            "title": "網路掛號",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
-          },
-          {
-            "title": "掛號查詢",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
-          },
+        "icon": "images/webapi/icons/regist/Visit_progress.png",
+        "childs": [
           {
             "title": "看診進度",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "regist/mapp.php?component=regist&view=realtime&region=A&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Visit_progress.png"
           }
         ]
       }
@@ -45,49 +38,58 @@
   },
   "menu2": {
     "title": "新民院區",
-    "childs": [{
+    "childs": [
+      {
         "title": "網路掛號",
-        "icon": "images/webapi/icons/regist/md0.png",
-        "childs": [{
+        "icon": "images/webapi/icons/regist/Registration.png",
+        "childs": [
+          {
             "title": "依科別",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=section&region=B&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Inquire.png"
           },
           {
             "title": "依醫師",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=section&type=doc&region=B&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Health_Center.png"
           },
           {
             "title": "掛號查詢或取消",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=search&region=B&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Visit_progress.png"
           }
         ]
       },
       {
         "title": "進度查詢",
-        "icon": "images/webapi/icons/regist/md0.png",
-        "childs": [{
-            "title": "網路掛號",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
-          },
-          {
-            "title": "掛號查詢",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
-          },
+        "icon": "images/webapi/icons/regist/Visit_progress.png",
+        "childs": [
           {
             "title": "看診進度",
-            "url": "reservation1.html?component=regist&view=schedule&secno=TG",
-            "icon": "images/webapi/icons/regist/md0.png"
+            "url": "/regist/mapp.php?component=regist&view=realtime&region=B&tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Visit_progress.png"
           }
         ]
       }
     ]
   },
   "menu3": {
-    "title": "版本：v1.0"
+    "title": "最新消息",
+    "childs": [
+      {
+        "title": "防疫專區",
+        "icon": "images/webapi/icons/regist/dummy.png",
+        "childs": [
+          {
+            "title": "疫情文章",
+            "url": "index/message/epzone.html?tmpl=mobile",
+            "icon": "images/webapi/icons/regist/Epidemic_Prevention_Center.png"
+          }
+        ]
+      }
+    ]
+  },
+  "menu4": {
+    "title": "版本：v1.1.10"
   }
 }

@@ -9,42 +9,42 @@ class HomePageController extends GetxController {
     new GridItem(
       icon: 'assets/images/ic_schedule.svg',
       title: '門診時間表',
-      link: 'tw/information/outpatient-schedule.html',
+      link: 'information/outpatient-schedule.html?tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_appointment.svg',
       title: '網路掛號',
-      link: 'reservation1.html',
+      link: 'regist/mapp.php?component=regist&view=section&tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_progress.svg',
       title: '查詢看診進度',
-      link: 'reservation1.html?component=regist&view=realtime',
+      link: 'regist/mapp.php?component=regist&view=realtime&tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_message.svg',
       title: '訊息專區',
-      link: 'index/message.html',
+      link: 'index/message.html?tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_convenience_service.svg',
       title: '便民服務',
-      link: 'index/convenience-services.html',
+      link: 'index/convenience-services.html?tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_health_management_center.svg',
       title: '健康管理中心',
-      link: 'index/convenience-services.html',
+      link: 'departments/health-care/fmd/health/單位介紹-健康管理科.html?tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_epidemic_prevention.svg',
       title: '疫情防疫專區',
-      link: 'index/convenience-services.html',
+      link: 'index/message/epzone.html?tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_search_branch.svg',
       title: '查詢科別',
-      link: 'reservation1.html?component=regist&view=section',
+      link: 'regist/mapp.php?component=regist&view=section&tmpl=mobile',
     ),
     new GridItem(
       icon: 'assets/images/ic_hospital_introduction.svg',
