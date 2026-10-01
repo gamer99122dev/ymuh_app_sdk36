@@ -42,9 +42,15 @@ class _WebViewPageState extends State<WebViewPage> {
           launchUrl(uri, mode: LaunchMode.externalApplication);
           return NavigationDecision.prevent;
         },
+        // 主頁已經開始有內容（不是卡在連線）就取消計時，子資源拖慢 onPageFinished 不該讓能用的頁面被換成錯誤畫面
+        // ponytail: 30 是估計值未實測，真機觀察後再調
+        onProgress: (p) {
+          if (p >= 30) _loadTimeout?.cancel();
+        },
         onPageFinished: (_) => _loadTimeout?.cancel(),
         onWebResourceError: (e) {
-          // print(e);
+          // 只有主頁失敗才顯示錯誤畫面；圖片、script 等子資源失敗不影響整頁
+          if (e.isForMainFrame == false) return;
           _loadTimeout?.cancel();
           setState(() {
             hasError = true;
