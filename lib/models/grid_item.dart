@@ -26,12 +26,10 @@ class GridItem {
         await Get.to(WebViewPage(url: this.fullUrl, title: this.title));
         break;
       case 'BROWSER':
-        Uri uri = Uri.parse(this.link!);
-        await canLaunchUrl(uri) ? launchUrl(uri, mode: LaunchMode.externalApplication) : throw 'Cannot launch url: ${this.link}';
+        await AppController.openExternal(Uri.parse(this.link!), mode: LaunchMode.externalApplication);
         break;
       case 'EMAIL':
-        Uri mailScheme = Uri.parse('mailto:${this.link}');
-        await canLaunchUrl(mailScheme) ? launchUrl(mailScheme) : throw 'Cannot send mail to: ${this.link}';
+        await AppController.openExternal(Uri.parse('mailto:${this.link}'), failHint: '找不到郵件程式，請改用電子郵件寄到 ${this.link}');
         break;
       default:
     }

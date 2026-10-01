@@ -42,16 +42,19 @@ class MenuPageController extends GetxController {
         var data = response.data['data'][0];
         // 將Json轉成Class
         _parseMenuData(data);
-        update();
-        AppController.hideLoading();
       } else {
         throw 'Error';
       }
       // print(response);
     } catch (e) {
       print(e);
-      // 讀取預設資料
-      _parseMenuData(await _getDefaultMenu());
+      // 讀取預設資料；連預設資料都失敗就留空，至少要讓載入遮罩關掉（遮罩不能點掉）
+      try {
+        _parseMenuData(await _getDefaultMenu());
+      } catch (e2) {
+        print(e2);
+      }
+    } finally {
       update();
       AppController.hideLoading();
     }

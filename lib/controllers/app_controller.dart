@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:load/load.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ymuh_app/models/grid_item.dart';
 
 // Global Controller: 共用Method
@@ -51,5 +52,15 @@ class AppController extends GetxController {
   // Hide loading overlay
   static void hideLoading() {
     return hideLoadingDialog();
+  }
+
+  // 開啟外部 App（瀏覽器、郵件、電話）。沒裝對應 App 等失敗情況要跟使用者說，不要按了沒反應
+  // 不用 canLaunchUrl：Manifest 沒宣告對應的 <queries> 時它會誤回 false
+  static Future<void> openExternal(Uri uri, {LaunchMode mode = LaunchMode.platformDefault, String? failHint}) async {
+    bool ok = false;
+    try {
+      ok = await launchUrl(uri, mode: mode);
+    } catch (_) {}
+    if (!ok) Get.snackbar('無法開啟', failHint ?? '手機上找不到可以開啟這個連結的應用程式');
   }
 }

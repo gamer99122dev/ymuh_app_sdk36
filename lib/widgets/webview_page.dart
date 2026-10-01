@@ -24,11 +24,7 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   void initState() {
     super.initState();
-    // 首次載入超過 15 秒（例如海外連不上醫院網站）就顯示錯誤畫面，不要讓使用者一直等空白頁
-    // ponytail: 只管第一頁；頁面內再跳轉不計時，網路很慢的使用者可能被誤判，需要時再調大秒數
-    _loadTimeout = Timer(Duration(seconds: 15), () {
-      if (mounted) setState(() => hasError = true);
-    });
+    _startTimer();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
@@ -39,7 +35,7 @@ class _WebViewPageState extends State<WebViewPage> {
           if (!request.isMainFrame || (uri.scheme == 'https' && uri.host == Uri.parse(AppController.BASE_URL).host)) {
             return NavigationDecision.navigate;
           }
-          launchUrl(uri, mode: LaunchMode.externalApplication);
+          AppController.openExternal(uri, mode: LaunchMode.externalApplication);
           return NavigationDecision.prevent;
         },
         // 主頁已經開始有內容（不是卡在連線）就取消計時，子資源拖慢 onPageFinished 不該讓能用的頁面被換成錯誤畫面
@@ -60,6 +56,21 @@ class _WebViewPageState extends State<WebViewPage> {
       ..loadRequest(Uri.parse(widget.url));
   }
 
+  // 首次載入超過 15 秒（例如海外連不上醫院網站）就顯示錯誤畫面，不要讓使用者一直等空白頁
+  // ponytail: 只管第一頁；頁面內再跳轉不計時，網路很慢的使用者可能被誤判，需要時再調大秒數
+  void _startTimer() {
+    _loadTimeout?.cancel();
+    _loadTimeout = Timer(Duration(seconds: 15), () {
+      if (mounted) setState(() => hasError = true);
+    });
+  }
+
+  void _retry() {
+    setState(() => hasError = false);
+    _startTimer();
+    controller.loadRequest(Uri.parse(widget.url));
+  }
+
   @override
   void dispose() {
     _loadTimeout?.cancel();
@@ -78,7 +89,9 @@ class _WebViewPageState extends State<WebViewPage> {
             ? WebViewWidget(controller: controller)
             : Container(
                 child: Center(
-                  child: Column(
+                  // 多了「重新載入」按鈕，小螢幕或橫向時要能捲動，才看得到按鈕
+                  child: SingleChildScrollView(
+                      child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -87,11 +100,16 @@ class _WebViewPageState extends State<WebViewPage> {
                       Text('伺服器忙碌中，請稍後再試!'),
                       SizedBox(height: 25),
                       ElevatedButton(
+                          onPressed: _retry,
+                          child: Text('重新載入'),
+                          style: ElevatedButton.styleFrom(backgroundColor: AppColors.PRIMARY_COLOR)),
+                      SizedBox(height: 10),
+                      ElevatedButton(
                           onPressed: Get.back,
                           child: Text('返回'),
                           style: ElevatedButton.styleFrom(backgroundColor: AppColors.PRIMARY_COLOR))
                     ],
-                  ),
+                  )),
                 ),
               ),
       ),
