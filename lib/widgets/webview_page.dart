@@ -46,7 +46,7 @@ class _WebViewPageState extends State<WebViewPage> {
         onPageFinished: (_) => _loadTimeout?.cancel(),
         onWebResourceError: (e) {
           // 只有主頁失敗才顯示錯誤畫面；圖片、script 等子資源失敗不影響整頁
-          if (e.isForMainFrame == false) return;
+          if (e.isForMainFrame == false || !mounted) return; // 使用者已經離開頁面就不用處理
           _loadTimeout?.cancel();
           setState(() {
             hasError = true;

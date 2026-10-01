@@ -27,7 +27,6 @@ class MenuPageController extends GetxController {
   @override
   void onInit() {
     _getMenu();
-    _getDefaultMenu();
     _getBottomMenu();
     super.onInit();
   }
@@ -50,6 +49,7 @@ class MenuPageController extends GetxController {
       print(e);
       // 讀取預設資料；連預設資料都失敗就留空，至少要讓載入遮罩關掉（遮罩不能點掉）
       try {
+        _menus.clear(); // 線上資料可能解析到一半才失敗，不要和預設資料混在一起
         _parseMenuData(await _getDefaultMenu());
       } catch (e2) {
         print(e2);
