@@ -40,7 +40,9 @@ class HomePage extends StatelessWidget {
                       onTap: () => gridItem.launchURL(),
                       child: Ink(
                         width: width,
-                        height: 100,
+                        // 高度跟著系統字體大小放大，大字體下標題折行才不會超出磚塊（一般字體仍是 100）
+                        // 用內文字級 14 算倍率：Android 14+ 的字體縮放是非線性的，拿 100 去算會幾乎不放大
+                        height: 100 * MediaQuery.textScalerOf(context).scale(14) / 14,
                         decoration: new BoxDecoration(
                           color: AppColors.hex('#F7F8F8'),
                           boxShadow: [
@@ -62,7 +64,7 @@ class HomePage extends StatelessWidget {
                             SizedBox(
                               height: 10,
                             ),
-                            Text(gridItem.title!),
+                            Text(gridItem.title!, textAlign: TextAlign.center),
                           ],
                         ),
                       ),

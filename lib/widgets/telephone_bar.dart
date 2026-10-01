@@ -17,7 +17,13 @@ class TelephoneBar extends StatelessWidget {
         children: [
           SvgPicture.asset('assets/images/ic_telephone.svg'),
           SizedBox(width: 19),
-          Text('總機電話專線 : (03)932-5192', style: TextStyle(color: Colors.white)),
+          // 窄螢幕加大字體時文字會超出畫面，放不下就自動縮小，電話號碼才不會被切掉
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text('總機電話專線 : (03)932-5192', style: TextStyle(color: Colors.white)),
+            ),
+          ),
         ],
       ),
     );
