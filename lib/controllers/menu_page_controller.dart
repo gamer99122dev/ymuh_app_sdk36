@@ -33,34 +33,29 @@ class MenuPageController extends GetxController {
 
   // 取得Menu資料
   void _getMenu() async {
+    // 先用 App 內附的選單（線上資料的快照），畫面馬上有內容；線上資料回來再換掉，連不上也不會卡住
     try {
-      AppController.showLoading();
+      _menus = _parseMenuData(await _getDefaultMenu());
+      update();
+    } catch (e) {
+      print(e);
+    }
+    try {
       var response = await Dio(BaseOptions(connectTimeout: Duration(seconds: 5), receiveTimeout: Duration(seconds: 8)))
           .get('https://www.hosp.nycu.edu.tw/tw/?option=com_ajax&plugin=mobile&task=get.menu&format=json');
       if (response.data['success']) {
-        var data = response.data['data'][0];
-        // 將Json轉成Class
-        _parseMenuData(data);
-      } else {
-        throw 'Error';
+        // 先完整解析完再換掉，解析到一半失敗就留著內附的選單
+        _menus = _parseMenuData(response.data['data'][0]);
+        update();
       }
       // print(response);
     } catch (e) {
       print(e);
-      // 讀取預設資料；連預設資料都失敗就留空，至少要讓載入遮罩關掉（遮罩不能點掉）
-      try {
-        _menus.clear(); // 線上資料可能解析到一半才失敗，不要和預設資料混在一起
-        _parseMenuData(await _getDefaultMenu());
-      } catch (e2) {
-        print(e2);
-      }
-    } finally {
-      update();
-      AppController.hideLoading();
     }
   }
 
-  void _parseMenuData(data) {
+  List<MenuModel> _parseMenuData(data) {
+    final menus = <MenuModel>[];
     data.forEach((key, values) {
       // print("Key : $k, Value : $v");
       MenuModel menu = new MenuModel();
@@ -78,10 +73,11 @@ class MenuPageController extends GetxController {
         });
       }
 
-      _menus.add(menu);
+      menus.add(menu);
 
       // print(menu);
     });
+    return menus;
   }
 
   // 從json file取得預設的選單

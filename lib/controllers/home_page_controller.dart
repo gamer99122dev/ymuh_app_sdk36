@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:ymuh_app/controllers/app_controller.dart';
@@ -95,9 +96,10 @@ class HomePageController extends GetxController {
 
   // 透過API取得資料
   void _getHomeData() async {
+    // 線上資料 1 秒內沒回來（連線慢、海外被擋）就先顯示預設值，首頁不要一直空白；線上資料之後回來再換掉
+    final showDefaults = Timer(Duration(seconds: 1), () => _useDefaults(onlyIfEmpty: true));
     try {
-      AppController.showLoading();
-      // 連不上伺服器（例如海外被擋）時幾秒內就改用預設值，不要讓載入畫面一直轉
+      // 連不上伺服器時幾秒內就放棄
       var response = await Dio(BaseOptions(connectTimeout: Duration(seconds: 5), receiveTimeout: Duration(seconds: 8))).get(
           'https://www.hosp.nycu.edu.tw/tw/index.php?option=com_ajax&plugin=mobile&task=get.main_menu&format=json');
       if (response.data['success']) {
@@ -114,17 +116,23 @@ class HomePageController extends GetxController {
         _parseBottomMenu(jsonBottomMenu);
 
         update();
-        AppController.hideLoading();
       } else {
         throw 'Error';
       }
     } catch (e) {
       // API處理失敗就設定成預設值
-      _gridItems = _defaultGridItems;
-      _bottomNavItems = _defaultBottomNavItems;
-      update();
-      AppController.hideLoading();
+      _useDefaults();
+    } finally {
+      showDefaults.cancel();
     }
+  }
+
+  void _useDefaults({bool onlyIfEmpty = false}) {
+    if (onlyIfEmpty && _gridItems.isNotEmpty) return;
+    // 複製一份：_parseMainMenu 會清空 _gridItems，不能讓它清到預設值本身
+    _gridItems = List.of(_defaultGridItems);
+    _bottomNavItems = List.of(_defaultBottomNavItems);
+    update();
   }
 
   // Parse Main Menu Json Data
