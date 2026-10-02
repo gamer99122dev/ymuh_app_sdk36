@@ -18,6 +18,8 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   bool hasError = false;
+  // 主頁還沒有內容時蓋一層「載入中」，免得使用者只看到空白頁；關閉時機跟逾時計時器一致（_finishLoading）
+  bool loading = true;
   late final WebViewController controller;
   Timer? _loadTimeout;
 
@@ -41,9 +43,9 @@ class _WebViewPageState extends State<WebViewPage> {
         // 主頁已經開始有內容（不是卡在連線）就取消計時，子資源拖慢 onPageFinished 不該讓能用的頁面被換成錯誤畫面
         // ponytail: 30 是估計值未實測，真機觀察後再調
         onProgress: (p) {
-          if (p >= 30) _loadTimeout?.cancel();
+          if (p >= 30) _finishLoading();
         },
-        onPageFinished: (_) => _loadTimeout?.cancel(),
+        onPageFinished: (_) => _finishLoading(),
         onWebResourceError: (e) {
           // 只有主頁失敗才顯示錯誤畫面；圖片、script 等子資源失敗不影響整頁
           if (e.isForMainFrame == false || !mounted) return; // 使用者已經離開頁面就不用處理
@@ -56,7 +58,8 @@ class _WebViewPageState extends State<WebViewPage> {
       ..loadRequest(Uri.parse(widget.url));
   }
 
-  // 首次載入超過 15 秒（例如海外連不上醫院網站）就顯示錯誤畫面，不要讓使用者一直等空白頁
+  // 首次載入超過 15 秒（例如海外連不上醫院網站）就顯示錯誤畫面，不要讓使用者一直等空白頁。
+  // 曾改成 30 秒但等太久；實測回應約 0.1～0.2 秒、最慢一次約 5 秒，15 秒還有餘裕。只計到頁面開始出現內容為止（見 onProgress）
   // ponytail: 只管第一頁；頁面內再跳轉不計時，網路很慢的使用者可能被誤判，需要時再調大秒數
   void _startTimer() {
     _loadTimeout?.cancel();
@@ -65,8 +68,17 @@ class _WebViewPageState extends State<WebViewPage> {
     });
   }
 
+  // 主頁有內容了（或載入完成）：取消計時、拿掉「載入中」
+  void _finishLoading() {
+    _loadTimeout?.cancel();
+    if (mounted && loading) setState(() => loading = false);
+  }
+
   void _retry() {
-    setState(() => hasError = false);
+    setState(() {
+      hasError = false;
+      loading = true;
+    });
     _startTimer();
     controller.loadRequest(Uri.parse(widget.url));
   }
@@ -86,7 +98,26 @@ class _WebViewPageState extends State<WebViewPage> {
       body: SafeArea(
         top: false,
         child: !hasError
-            ? WebViewWidget(controller: controller)
+            ? Stack(children: [
+                WebViewWidget(controller: controller),
+                // 只蓋在頁面上，AppBar 的返回鍵一直能按；錯誤或逾時到時 hasError 會換成錯誤畫面
+                if (loading)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.white,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 20),
+                            Text('載入中，請稍候…'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ])
             : Container(
                 child: Center(
                   child: Column(
