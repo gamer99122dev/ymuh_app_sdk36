@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 讓 MainActivity 在本畫面顯示期間隱藏其他 App 的浮層（Android 12+），見 MainActivity.java -->
+    <uses-permission android:name="android.permission.HIDE_OVERLAY_WINDOWS"/>
     <application
         android:label="陽明交通大學附設醫院"
         android:name="${applicationName}"
