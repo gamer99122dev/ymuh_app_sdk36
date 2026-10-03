@@ -9,7 +9,7 @@ class AppController extends GetxController {
   // static const String BASE_URL = 'https://www.ymuh.ym.edu.tw';
   static const String BASE_URL = 'https://www.hosp.nycu.edu.tw';
   // 錯誤畫面的診斷資訊用；要跟 pubspec.yaml 的 version 一起改（Flutter 沒有內建讀版本號，不為這個多加套件）
-  static const String VERSION = '1.1.1+11';
+  static const String VERSION = '1.1.1+12';
   // 首頁和選單頁下方按鈕資料
   static List<Map<String, dynamic>> BOTTOM_MENUS = [];
   @override
